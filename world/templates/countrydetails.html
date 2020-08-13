@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<!-- Right side column. Contains the navbar and content of the page -->
+      <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+          <h1>
+              {{ country.Country }}
+          </h1>
+
+        </section>
+        <section class="content">
+          <div class="box bg-aqua color-palette">
+            <div class="box-body">
+              <div class="row">
+                <div class="col-lg-6 col-xs-12">
+                  <h3 align="center">Total Cases</h3>
+                  <h1 align="center">{{ country.TotalConfirmed }}</h1>
+                </div>
+                <div class="col-lg-6 col-xs-12">
+                  <h3 align="center">Active Cases</h3>
+                  <h1 align="center">{% with details|last as last %}
+                                          {{ last.Active }}
+                                      {% endwith %}
+                  </h1>
+                </div>
+              </div>
+              <p></p>
+              <div class="row">
+                <div class="col-lg-6 col-xs-12">
+                  <h3 align="center">Recovered</h3>
+                  <h1 align="center">{% with details|last as last %}
+                                          {{ last.Recovered }}
+                                      {% endwith %}
+                  </h1>
+                </div>
+                <div class="col-lg-6 col-xs-12">
+                  <h3 align="center">Deaths</h3>
+                  <h1 align="center">{% with details|last as last %}
+                                          {{ last.Deaths }}
+                                      {% endwith %}
+                  </h1>
+                </div>
+              </div>
+            </div><!-- /.box-body -->
+          </div>
+          <div class="box box-info">
+            <div class="box-header">
+              <h3 class="box-title">Total Cases</h3>
+            </div>
+            <div class="box-body chart-responsive">
+              <div class="chart" id="line-chart-total" style="height: 300px;"></div>
+            </div><!-- /.box-body -->
+          </div><!-- /.box -->
+          <div class="box box-info">
+            <div class="box-header">
+              <h3 class="box-title">Total Cases</h3>
+            </div>
+            <div class="box-body chart-responsive">
+              <div class="chart" id="line-chart-daily" style="height: 300px;"></div>
+            </div><!-- /.box-body -->
+          </div>
+        </section>
+      </div>
+
+{% endblock %}
+{% block javascript %}
+<script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+<script src="{% static 'plugins/morris/morris.min.js' %}" type="text/javascript"></script>
+<script type="text/javascript">
+  $(function () {
+    var line = new Morris.Line({
+      element: 'line-chart-total',
+      resize: true,
+      data: [
+         {% for items in details %}
+        {y: '{{ items.Date }}', Confirmed: {{ items.Confirmed }} },
+        {% endfor %}
+      ],
+      xkey: 'y',
+      ykeys: ['Confirmed'],
+      labels: ['Confirmed'],
+      lineColors: ['#3c8dbc'],
+      hideHover: 'true',
+      lineWidth: 4,
+      pointSize: 1,
+
+    });
+    var line = new Morris.Line({
+      element: 'line-chart-total',
+      resize: true,
+      data: [
+         {% for items in details %}
+        {y: '{{ items.Date }}', Confirmed: {{ items.Confirmed }} },
+        {% endfor %}
+      ],
+      xkey: 'y',
+      ykeys: ['Confirmed'],
+      labels: ['Confirmed'],
+      lineColors: ['#3c8dbc'],
+      hideHover: 'true',
+      lineWidth: 4,
+      pointSize: 1,
+
+    });
+  });
+</script>
+
+{% endblock %}
